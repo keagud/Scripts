@@ -15,7 +15,10 @@ if [[ ! -d venv ]]; then
 fi
 
 source venv/bin/activate
-pip $@
+
+if [[  $# > 1 ]]; then
+  pip $@
+fi
 
 echo "updating requirements.txt..."
 echo ""
