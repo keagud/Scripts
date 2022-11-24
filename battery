@@ -1,0 +1,3 @@
+#!/bin/bash
+
+mkfifo pipe && ( cat pipe | grep "state"   &  upower -i /org/freedesktop/UPower/devices/battery_BAT0  | tee pipe | grep   "percentage" ) && rm pipe

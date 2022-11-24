@@ -1,0 +1,5 @@
+#!/usr/bin/bash
+
+terms=${@}
+str=$(echo "$terms" | sed "s/ /+/g" )
+`echo "lynx lite.duckduckgo.com/lite/?q=$str"` 
