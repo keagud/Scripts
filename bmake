@@ -1,0 +1,8 @@
+#!/usr/bin/bash
+
+wd=$PWD
+cd ~/Code/Public-Repos/Boilermaker
+python3 pymake.py $@
+
+mv $1 $wd
+
