@@ -1,0 +1,35 @@
+#!/usr/bin/bash
+
+use_sudo=false
+
+if [[ $@ =~ "sudo" ]]; then
+	sudo -v;
+	use_sudo=true
+fi
+
+bk(){
+	#kill all spawned children once this function terminates
+	trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
+
+	#refresh sudo permissions in the background every 10 seconds
+	if  $use_sudo; then
+		while true; do sudo -v && sleep 10; done &
+	fi
+	
+	#run the passed commands, with only stderr printed
+	time $@  2>&1 > /dev/null | cat 
+	echo "finished \"$@\""
+}
+
+bk $@ & 
+
+
+
+
+
+
+
+	
+
+
+
