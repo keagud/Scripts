@@ -40,7 +40,5 @@ blankline 2
 fileadd "int main($mainargs){ return 0; }"
 indent $target -linux -nut -i2 -ss
 
-
-
-
+$EDITOR ${target}
 
