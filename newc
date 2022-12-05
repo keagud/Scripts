@@ -1,9 +1,9 @@
-#/usr/bin/bash
+#!/bin/bash
 
 
-includes=(stdio stdlib stdbool)
+incl=("stdio" "stdlib" "stdbool")
 
-mainargs=void
+mainargs="void"
 
 
 
@@ -31,7 +31,7 @@ blankline(){
 fileadd "/* $(date -I) */ "
 blankline 2
 
-for line in "${includes[@]}"; do
+for line in "${incl[@]}"; do
   fileadd "#include <$line.h>" 
 done
 
