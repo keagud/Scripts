@@ -1,0 +1,18 @@
+#!/usr/bin/bash
+
+
+sourcefile=""
+
+if  [[ $# == 0 ]]; then
+
+  sourcefile="$(ls *.c | head -1)"
+else
+  sourcefile=$1
+fi
+
+outfile="${sourcefile/.c/}"
+
+gcc "$sourcefile" -o "$outfile.bin"
+echo "Compiled\!"
+
+
