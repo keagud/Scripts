@@ -17,13 +17,13 @@ fi
 touch $target
 
 fileadd(){
-  echo "$@" >> $target
+  echo "$@" >> "$target"
 }
 
 blankline(){
 
   for (( i=0; i<$1; i++ )); do
-    echo "" >> $target;
+    echo "" >> "$target";
   done
 
 }
@@ -38,7 +38,10 @@ done
 blankline 2
 
 fileadd "int main($mainargs){ return 0; }"
-indent $target -linux -nut -i2 -ss
+indent "$target" -linux -nut -i2 -ss
 
-$EDITOR ${target}
+
+
+
+$EDITOR "$target" 
 
