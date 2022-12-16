@@ -2,13 +2,13 @@
 
 
 pacout=$(pacman -Qu)
-upgradable=$(echo "$pacout" | wc -l)
+upgradable=$(( $(echo "$pacout" | wc -l) - 1 ))
 
 kernelpat='^linux\s'
 
 kmatch=$(echo "$pacout" | grep "$kernelpat" -c)
 
-if [[ $upgradable ]]; then
+if [[ $upgradable > 0 ]]; then
   echo -en "\e[1;37m"
   echo "$upgradable packages can be updated"
 
