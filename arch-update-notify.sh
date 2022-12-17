@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-pacout=$(pacman -Qu)
+pacout=$(checkupdates)
 upgradable=$(( $(echo "$pacout" | wc -l) - 1 ))
 
 kernelpat='^linux\s'
