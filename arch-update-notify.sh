@@ -1,23 +1,37 @@
 #!/bin/bash
 
 
-pacout=$(checkupdates)
-upgradable=$(( $(echo "$pacout" | wc -l) - 1 ))
+tempfile=~/.local/pactemp/updateable
+checkupdate(){
+  mkdir -p ~/.local/pactemp
+  checkupdates > "$tempfile"
+  return $?
+}
 
-kernelpat='^linux\s'
+notif_update(){
 
-kmatch=$(echo "$pacout" | grep "$kernelpat" -c)
+  updates_count=$(cat "$tempfile" | wc -l)
+  kernel_update=0
 
-if [[ $upgradable > 0 ]]; then
-  echo -en "\e[1;37m"
-  echo "$upgradable packages can be updated"
+  if [[ $updates_count > 0 ]]; then 
+    kernel_update=$(cat "$tempfile" | grep "^linux\s" -c) 
 
-  if [[ $kmatch > 0  ]]; then
-    echo "new kernel version available!" | lolcat
+    echo -en "\e[1;32m"
+    echo "$updates_count packages can be upgraded" | lolcat
+
+    if [[ $kernel_update > 0 ]]; then 
+
+      echo "New kernel is available!" | lolcat
+
+    fi 
+
+    echo -e "\e[0m"
+
+
   fi
 
-  echo -e "\e[0m"
-fi
+}
 
 
-
+notif_update
+checkupdate &
