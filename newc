@@ -2,9 +2,7 @@
 
 
 incl=("stdio" "stdlib" "stdbool")
-
 mainargs="void"
-
 
 
 

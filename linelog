@@ -24,7 +24,7 @@ echo -e "Project\tAdded\tRemoved\tNet"
 
 for dn in $(find $1 -type d -name .git); do
   cd "$dn"
-  res=$(git log  --pretty=tformat: --numstat --ignore-all-space --ignore-blank-lines --after="$target_date 00:00" --before="$target_date 23:59" | gawk '{ add += $1 ; subs += $2 ; loc += $1 - $2 } END { printf "%s\t%s\t%s\t",add,subs,loc}')
+  res=$(git log  --pretty=tformat: --numstat --ignore-all-space --ignore-matching-lines="^[:space:]*.[:space:]*" --ignore-blank-lines --after="$target_date 00:00" --before="$target_date 23:59" | gawk '{ add += $1 ; subs += $2 ; loc += $1 - $2 } END { printf "%s\t%s\t%s\t",add,subs,loc}')
 
   if  ! [[ $res =~ [0-9] ]]; then
     continue
