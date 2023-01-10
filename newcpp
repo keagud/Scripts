@@ -1,14 +1,14 @@
 #!/bin/bash
 
 
-incl=("stdio" "stdlib" "stdbool")
+incl=("iostream" "string")
 
 mainargs="void"
 
 
 
 
-target="$1.c"
+target="$1.cpp"
 if [[ -f "$target" ]]; then
   echo "$target already exists!";
   exit 1
@@ -32,7 +32,7 @@ fileadd "/* $(date -I) */ "
 blankline 2
 
 for line in "${incl[@]}"; do
-  fileadd "#include <$line.h>" 
+  fileadd "#include <$line>" 
 done
 
 blankline 2
