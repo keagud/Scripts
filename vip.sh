@@ -1,4 +1,4 @@
-#!usr/bin/bash
+#!/usr/bin/bash
 
 start_dir=$PWD
 venv_root_dir=$start_dir
@@ -24,7 +24,7 @@ cd $venv_root_dir
 
 if ! [[ -d venv ]]; then
   echo "no virtualenv found here- making one now..."
-  virtualenv venv
+  python -m virtualenv venv
 fi
 
 
