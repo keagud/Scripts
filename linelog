@@ -1,5 +1,5 @@
 #!/bin/bash
 
 git log  --pretty=tformat: --numstat --after="$(date -I) 00:00" --before="$(date -I) 23:59"\
-| gawk '{ add += $1 ; subs += $2 ; loc += $1 - $2 } END { printf "added lines: %s removed lines : %s total lines: %s\n",add,subs,loc }' -
+| gawk '{ add += $1 ; subs += $2 ; loc += $1 - $2 } END { printf "added lines: %s removed lines : %s net lines: %s\n",add,subs,loc }' -
 
