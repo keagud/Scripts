@@ -35,4 +35,4 @@ notif_update(){
 
 mkdir -p ~/.local/pactemp
 notif_update
-checkupdate &
+checkupdate &> /dev/null &

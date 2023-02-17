@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-incl=("iostream" "string")
+incl=("iostream" "string" "vector")
 
 mainargs="void"
 
@@ -37,11 +37,21 @@ done
 
 blankline 2
 
+fileadd "using std::string;"
+fileadd "using std::vector;"
+fileadd "using std::cout;"
+fileadd "using std::cin;"
+
+blankline 2
+
 fileadd "int main($mainargs){ return 0; }"
 clang-format "$target" -i -style=llvm
 
-
-
+if [[ "g" == "$2" ]]; then
+  neovide --maximized "$target" &
+else
 
 $EDITOR "$target" 
+
+fi
 
