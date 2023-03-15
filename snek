@@ -1,0 +1,7 @@
+#!/bin/bash
+
+
+black .
+ruff . --per-file-ignores __init__.py:F401 --fix --show-fixes  --show-source || 
+ruff . --per-file-ignores __init__.py:F401 --silent 
+
