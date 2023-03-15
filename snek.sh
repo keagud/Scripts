@@ -11,12 +11,10 @@ fi
 
 
  if ruff . --per-file-ignores __init__.py:F401 --fix --show-fixes  --show-source  ; then
-
-  echo "Ruff found no unfixable problems; everything looks good!"
- else
-  echo "Problems found, fix them!"
+   echo "Problems found, fix them!"
    exit 2
-
+else
+  echo "Everything looks good!"
 fi
 
 
