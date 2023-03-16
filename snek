@@ -1,22 +1,12 @@
 #!/bin/bash
 
-echo "Formatting with black..."
-
-if  black . ; then 
-  echo "Formatting succeeded!"
-else
-  echo "Formatting failed! bailing out"
-  exit 2
-fi 
-
 
  if ruff . --per-file-ignores __init__.py:F401 --fix --show-fixes  --show-source  ; then
 
-  echo "Ruff found no unfixable problems; everything looks good!"
+  echo "Ruff ran successfully! 😌"
  else
-  echo "Problems found, fix them!"
+  echo "Ruff found problems, fix them! 😭"
    exit 2
-
 fi
 
-
+black . --quiet &> /dev/null
