@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if  ! once.sh; then 
-  echo "a" > /dev/null
+  exit 0
 fi
 
 UPDATES="$(checkupdates)"
