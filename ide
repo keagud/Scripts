@@ -1,2 +1,4 @@
 #!/bin/bash
-( neovide . --maximized  &)  && exit
+ neovide . --maximized 
+pkill  $PPID
+exit

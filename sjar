@@ -1,0 +1,2 @@
+#!/bin/bash
+scalac $1 -d $(basename $1 .scala).jar
