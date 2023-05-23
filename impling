@@ -1,0 +1,156 @@
+#!/bin/env python
+from __future__ import annotations
+
+import argparse
+import os
+import signal
+import subprocess
+import sys
+from pathlib import Path
+from typing import Any
+
+
+def get_args():
+    parser = argparse.ArgumentParser()
+
+    group = parser.add_mutually_exclusive_group()
+
+    group.add_argument(
+        "-s", "--start", type=str, help="Start a shell command as a background process"
+    )
+
+    parser.add_argument(
+        "-n", "--name", type=str, help="Assign a label to a new process"
+    )
+
+    group.add_argument(
+        "-k", "--kill", type=str, help="Kill a running background process"
+    )
+
+    group.add_argument(
+        "--killall", action="store_true", help="Kill all managed processes"
+    )
+
+    group.add_argument(
+        "-l", "--list", action="store_true", help="List managable processes"
+    )
+
+    return parser.parse_args()
+
+
+def list_processes():
+    running = get_known_processes()
+
+    if not running:
+        print("No running processes")
+        return
+
+    for name, pid in running.items():
+        print(f"{name}\t{pid}")
+
+
+def add_process(name: str, command: str, quiet: bool = True):
+    target_file = initialize_fs().joinpath(f"{name}.process")
+    process_cmd = rf"( {command} ) &"
+
+    process_kwargs: dict[str, Any] = {"shell": True}
+
+    if quiet:
+        process_kwargs["stdout"] = subprocess.DEVNULL
+        process_kwargs["stderr"] = subprocess.DEVNULL
+
+    proc = subprocess.Popen(process_cmd, **process_kwargs)
+
+    with open(target_file, "w") as outfile:
+        outfile.write(str(proc.pid + 1))
+
+
+def pid_exists(pid: int) -> bool:
+    try:
+        os.kill(pid, 0)
+    except OSError:
+        return False
+
+    return True
+
+
+def get_known_processes():
+    pids_dir = initialize_fs()
+    files_contents: dict[str, int] = {}
+
+    to_delete: list[Path] = []
+
+    for process_file in pids_dir.glob("*.process"):
+        process_name = process_file.stem
+        with open(process_file, "r") as infile:
+            process_pid_str = infile.read().strip()
+
+        process_pid = int(process_pid_str)
+
+        if not pid_exists(int(process_pid)):
+            to_delete.append(process_file)
+            continue
+
+        files_contents[process_name] = process_pid
+
+    for invalid_file in to_delete:
+        os.remove(invalid_file)
+
+    return files_contents
+
+
+def kill_process(process_name: str):
+    process_name = process_name.lower()
+    processes = get_known_processes()
+    process_id = processes[process_name]
+
+    try:
+        os.kill(process_id, signal.SIGTERM)
+
+        print(f"Sent terminate signal to {process_name} (PID {process_id})")
+
+    except KeyError:
+        print("No process with that name was found. Try --list to see all")
+
+
+def initialize_fs():
+    pids_dir = Path("/tmp/impling/")
+
+    if not pids_dir.exists():
+        pids_dir.mkdir()
+
+    return pids_dir
+
+
+def cli():
+    args = get_args()
+
+    if args.killall:
+        processes = get_known_processes()
+
+        if not processes:
+            print("No running processes")
+            sys.exit(0)
+
+        for proc in processes:
+            kill_process(proc)
+
+        print(f"Terminated {len(processes.keys())} processes")
+
+        sys.exit(0)
+
+    if args.start:
+        process_name = args.name if args.name else args.start
+        add_process(process_name, args.start)
+        sys.exit(0)
+
+    if args.list:
+        list_processes()
+        sys.exit()
+
+    if args.kill:
+        kill_process(args.kill)
+
+
+if __name__ == "__main__":
+    cli()
