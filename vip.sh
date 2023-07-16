@@ -10,7 +10,7 @@ venv_root_dir=$start_dir
 
 while [[ $PWD != '/' ]]; do
 
-  if [[ -d venv ]] || [[ -d .git ]] ; then
+  if [[ -d .venv ]] || [[ -d .git ]] ; then
     venv_root_dir=$PWD
     echo "Project root determined as $venv_root_dir"
     break
@@ -22,7 +22,7 @@ done
 
 cd $venv_root_dir
 
-if ! [[ -d venv ]]; then
+if ! [[ -d .venv ]]; then
   echo "no virtualenv found here- making one now..."
   python -m virtualenv venv
 fi
@@ -39,7 +39,7 @@ fi
 
 
 
-source venv/bin/activate
+source .venv/bin/activate
 pip freeze | sort > .old_requirements.txt
 
 if [[  $# > 1 ]]; then
