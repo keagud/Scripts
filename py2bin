@@ -1,0 +1,19 @@
+#!/bin/sh
+
+# append a shebang to a python script, 
+# copy to ~/.local/bin, and mark executable
+
+BIN_NAME=$(basename $1 .py)
+BIN_DIR="$HOME/.local/bin"
+BIN_PATH="$BIN_DIR/$BIN_NAME"
+
+{
+echo "#!/bin/env python3" > $BIN_PATH &&
+cat $1 >> $BIN_PATH &&
+chmod +x $BIN_PATH 
+} &&  echo "Successfully created binary: $BIN_PATH" || echo "Failed to create $BIN_PATH"
+
+
+
+
+
