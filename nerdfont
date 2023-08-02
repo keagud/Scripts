@@ -1,0 +1,23 @@
+#!/bin/bash
+
+if [ $1 == "--list" ]; then 
+  TMPFILE="/tmp/fontlist"
+  curl  -Ls "https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts" |
+  jq   '.payload.tree.items[] | select(.contentType == "directory") | .name'  
+
+else 
+
+
+FONTNAME=$1
+ZIP_DL_LOCATION="/tmp/$FONTNAME.tar.xz"
+FONTS_PATH="$HOME/.fonts"
+
+curl --output-dir "/tmp"  -o "$FONTNAME.tar.xz" -L# https://github.com/ryanoasis/nerd-fonts/releases/latest/download/$FONTNAME.tar.xz
+mkdir -p "$FONTS_PATH/$FONTNAME"
+tar -xf $ZIP_DL_LOCATION -C $FONTS_PATH
+fc-cache -f
+
+
+fi
+
+
