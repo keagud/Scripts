@@ -1,0 +1,23 @@
+#!/bin/env python3
+# 2023-09-27
+
+import datetime as dt
+import sys
+import re
+
+
+def main():
+    input_date_str = sys.argv[1]
+
+
+
+    input_date = dt.date.fromisoformat(input_date_str)
+    today = dt.date.today()
+
+    diff = input_date - today
+
+    print(f"{diff.days} days to {input_date_str}")
+
+
+if __name__ == "__main__":
+    main()
