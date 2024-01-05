@@ -1,0 +1,4 @@
+#!/bin/bash
+
+
+nb add "by_day/$(date -I)/$1.md"

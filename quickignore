@@ -1,0 +1,35 @@
+#!/bin/env python3
+
+import requests
+from urllib.parse import quote
+import sys
+from pathlib import Path
+from pprint import pprint
+import json
+
+
+def main():
+    gitignore_path = Path.cwd().joinpath(".gitignore")
+
+    if gitignore_path.exists():
+        raise FileExistsError("There's already a gitignore here")
+
+    base_url = "https://raw.githubusercontent.com/github/gitignore/main"
+    target = quote(sys.argv[1])
+
+    url = f"{base_url}/{target}.gitignore"
+
+    reply = requests.get(url)
+
+    reply.raise_for_status()
+
+    gitignore_content = reply.text
+
+    with open(gitignore_path, "w") as fp:
+        fp.write(gitignore_content)
+
+    print(f"Wrote the contents of {url} to {gitignore_path}")
+
+
+if __name__ == "__main__":
+    main()
