@@ -1,0 +1,22 @@
+#!/bin/bash
+
+if [ -z "${OBSIDIAN_VAULT}" ]; then
+  echo "No vault was found (OBSIDIAN_VAULT variable is unset)"
+  exit 1
+else
+
+  VAULT_DIR="${OBSIDIAN_VAULT}";
+fi
+
+
+LOG_DIR="$OBSIDIAN_VAULT/Heap/Logs"
+mkdir -p "$LOG_DIR"
+
+
+eval "$EDITOR $LOG_DIR/log_$(date +%s).md"
+
+
+
+
+
+
