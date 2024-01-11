@@ -1,0 +1,6 @@
+#!/bin/sh
+# quick and dirty script to zip tracked files in a git repo
+# doesn't handle edge cases at all
+
+rg --files "$1" \
+  | zip "$(date +%s)_$(basename "$1")" -@
