@@ -9,14 +9,12 @@ else
 fi
 
 
-LOG_DIR="$OBSIDIAN_VAULT/Heap/Logs"
+HOSTNAME=$( hostname | sed 's/[^a-zA-Z0-9 ]//g' | sed 's/[ _]/-/g')
+LOG_DIR="$NOTE_STORE" || "$OBSIDIAN_VAULT/Heap/Logs"
 mkdir -p "$LOG_DIR"
 
 
-eval "$EDITOR $LOG_DIR/log_$(date +%s).md"
-
-
-
+eval "$EDITOR $LOG_DIR/$(date +%s)__${HOSTNAME}__log.md"
 
 
 
